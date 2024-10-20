@@ -2,21 +2,23 @@ package com.shopify.svg2vd
 
 import com.android.ide.common.vectordrawable.Svg2Vector
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.multiple
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.versionOption
-import com.github.ajalt.clikt.parameters.types.file
+import com.github.ajalt.clikt.parameters.types.path
 import java.io.File
 import java.io.IOException
+import java.nio.file.Path
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) = Svg2Vd().main(args)
 
 class Svg2Vd : CliktCommand () {
-    private val source by argument(help = "SVG files").file(exists = true, folderOkay = false).multiple()
-    private val dest by argument(help = "Directory to save VectorDrawables").file(folderOkay = true, fileOkay = false)
+    private val source by argument(help = "SVG files").path(mustExist = true, canBeDir = false).multiple()
+    private val dest by argument(help = "Directory to save VectorDrawables").path(canBeDir = true, canBeFile = false)
 
     private val force by option("-f", "--force", help = "Force overwrites any existing files in the OUTPUT directory").flag(default = false)
     private val verbose by option("-v", "--verbose", help = "Verbose logging, show files as they are converted").flag(default = false)
@@ -24,15 +26,15 @@ class Svg2Vd : CliktCommand () {
     private val optimize by option("-o", "--optimize", help = "Run Avocado on generated VectorDrawables").flag(default = false)
 
     init {
-        versionOption("0.1", help = "Display information about svg2vd")
+        versionOption("0.2", help = "Display information about svg2vd")
     }
 
     override fun run() {
         convert(source, dest, force, optimize)
     }
 
-    private fun convert(inputFiles: List<File>, outputDir: File, forceOverwrite: Boolean = false, optimize: Boolean = false) {
-        inputFiles.forEach { convert(it, outputDir, forceOverwrite, optimize) }
+    private fun convert(inputFiles: List<Path>, outputDir: Path, forceOverwrite: Boolean = false, optimize: Boolean = false) {
+        inputFiles.forEach { convert(it.toFile(), outputDir.toFile(), forceOverwrite, optimize) }
     }
 
     private fun convert(inputFile: File, outputDir: File, forceOverwrite: Boolean, optimize: Boolean) {
@@ -49,7 +51,7 @@ class Svg2Vd : CliktCommand () {
         if (!forceOverwrite && outputFile.exists()) {
             println("$outputFile already exists, skipping.")
         } else {
-            Svg2Vector.parseSvgToXml(inputFile, outputFile.outputStream()).run {
+            Svg2Vector.parseSvgToXml(inputFile.toPath(), outputFile.outputStream()).run {
                 if (isNotEmpty()) {
                     printerrln(this)
                     if (!continueOnError) exitProcess(SVG_CONVERT_ERROR)
