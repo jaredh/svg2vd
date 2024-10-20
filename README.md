@@ -15,7 +15,7 @@ Build using the bundled Gradle wrapper.
 ## Running
 
 ```bash
-java -jar svg2vd-0.1.jar
+java -jar svg2vd-0.2.jar
 ```
 
 ### Help
@@ -52,7 +52,8 @@ See [Avocado's GitHub page](https://github.com/alexjlockwood/avocado) for more i
 # License
 
     MIT License
-    
+
+    Copyright (c) 2024 Jared Hendry
     Copyright (c) 2020 Shopify
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
