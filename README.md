@@ -3,6 +3,14 @@
 # svg2vd
 Convert SVGs to Android Vector Drawables from the command line.
 
+## Install
+
+### macOS
+
+```bash
+brew install jaredh/svg2vd/svg2vd
+```
+
 ## Building
 
 Build using the bundled Gradle wrapper.
