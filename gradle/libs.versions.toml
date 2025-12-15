@@ -1,0 +1,14 @@
+[versions]
+kotlin = "2.2.21"
+android-tools = "31.13.2"
+clikt = "5.0.3"
+junit = "4.12"
+
+[libraries]
+clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
+android-tools-common = { module = "com.android.tools:common", version.ref = "android-tools" }
+android-tools-sdk-common = { module = "com.android.tools:sdk-common", version.ref = "android-tools" }
+junit = { module = "junit:junit", version.ref = "junit" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

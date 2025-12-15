@@ -1,15 +1,15 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     java
-    kotlin("jvm") version "1.9.24"
+    alias(libs.plugins.kotlin.jvm)
     application
 }
 
-val mainClassName = "com.shopify.svg2vd.Svg2VdKt"
+val mainClassName = "dev.hendry.svg2vd.Svg2VdKt"
 
 group = rootProject.name
-version = "0.2"
+version = "0.3.0"
 
 repositories {
     google()
@@ -17,21 +17,21 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-
-    implementation ("com.github.ajalt.clikt:clikt:5.0.1")
-
-    compileOnly("com.android.tools:sdk-common:31.7.1")
-    implementation("com.android.tools:common:31.7.1")
-    testImplementation("junit", "junit", "4.12")
+    implementation(libs.clikt)
+    compileOnly(libs.android.tools.sdk.common)
+    implementation(libs.android.tools.common)
+    testImplementation(libs.junit)
+    testImplementation(kotlin("test-junit"))
 }
 
-configure<JavaPluginExtension> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
 }
 
 application {

@@ -1,4 +1,4 @@
-package com.shopify.svg2vd
+package dev.hendry.svg2vd
 
 import com.android.ide.common.vectordrawable.Svg2Vector
 import com.github.ajalt.clikt.core.CliktCommand
