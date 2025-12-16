@@ -1,9 +1,10 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    java
-    alias(libs.plugins.kotlin.jvm)
-    application
+    alias(libs.plugins.kotlin.multiplatform)
 }
 
 val mainClassName = "dev.hendry.svg2vd.Svg2VdKt"
@@ -16,44 +17,50 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation(libs.clikt)
-    compileOnly(libs.android.tools.sdk.common)
-    implementation(libs.android.tools.common)
-    testImplementation(libs.junit)
-    testImplementation(kotlin("test-junit"))
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
 kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+        binaries {
+            executable {
+                mainClass.set(mainClassName)
+            }
+        }
+    }
+
+    sourceSets {
+        jvmMain.dependencies {
+            implementation(libs.clikt)
+            compileOnly(libs.android.tools.sdk.common)
+            implementation(libs.android.tools.common)
+        }
+
+        jvmTest.dependencies {
+            implementation(libs.junit)
+            implementation(kotlin("test-junit"))
+        }
     }
 }
 
-application {
-    mainClass = mainClassName
-}
+tasks.register<Jar>("fatJar") {
+    group = "build"
+    description = "Creates a fat JAR with all dependencies"
 
-val jar by tasks.getting(Jar::class) {
     manifest {
         attributes["Main-Class"] = mainClassName
     }
 
-    from(configurations.compileClasspath.map {
+    from(kotlin.jvm().compilations["main"].output.allOutputs)
+    from(configurations.named("jvmRuntimeClasspath").map {
         it.files.map { file ->
             if (file.isDirectory) file else zipTree(file)
         }
     })
 
-    exclude(
-        "META-INF/*.RSA",
-        "META-INF/*.SF",
-        "META-INF/*.DSA",
-        "META-INF/versions/9/module-info.class",
-        "NOTICE"
-    )
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.named("build") {
+    dependsOn("fatJar")
 }
