@@ -33,6 +33,15 @@ kotlin {
         }
     }
 
+    js(IR) {
+        browser {
+            webpackTask {
+                mainOutputFileName.set("svg2vd.js")
+            }
+        }
+        binaries.executable()
+    }
+
     sourceSets {
         commonMain.dependencies { }
 
