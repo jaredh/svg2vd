@@ -1,4 +1,4 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub Actions status](https://github.com/jaredh/svg2vd/workflows/Java%20CI/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub Actions status](https://github.com/jaredh/svg2vd/actions/workflows/gradle.yml/badge.svg)
 
 # svg2vd
 Convert SVGs to Android Vector Drawables from the command line.
