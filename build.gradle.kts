@@ -10,7 +10,7 @@ plugins {
 val mainClassName = "dev.hendry.svg2vd.Svg2VdKt"
 
 group = rootProject.name
-version = "0.3.0"
+version = "0.4.0"
 
 repositories {
     google()
@@ -18,6 +18,10 @@ repositories {
 }
 
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexplicit-backing-fields")
+    }
+
     jvm {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
@@ -30,6 +34,12 @@ kotlin {
     }
 
     sourceSets {
+        commonMain.dependencies { }
+
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
+
         jvmMain.dependencies {
             implementation(libs.clikt)
             compileOnly(libs.android.tools.sdk.common)
@@ -38,6 +48,7 @@ kotlin {
 
         jvmTest.dependencies {
             implementation(libs.junit)
+            implementation(libs.android.tools.sdk.common)
             implementation(kotlin("test-junit"))
         }
     }
