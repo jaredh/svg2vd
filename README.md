@@ -16,14 +16,14 @@ brew install jaredh/svg2vd/svg2vd
 Build using the bundled Gradle wrapper.
 
 ```bash
-./gradlew jar
+./gradlew build
 ```
 
 
 ## Running
 
 ```bash
-java -jar svg2vd-0.2.jar
+java -jar svg2vd-0.4.0.jar
 ```
 
 ### Help
@@ -37,6 +37,10 @@ Options:
   -v, --verbose            Verbose logging, show files as they are converted
   -c, --continue-on-error  If an error occurs, continue processing SVGs
   -o, --optimize           Run Avocado on generated VectorDrawables
+  -e, --experimental       Use Kotlin Multiplatform converter (no Android SDK
+                           required)
+  -r, --rename             Rename output files to valid Android resource names
+                           (lowercase, a-z, 0-9, underscore only)
   --version                Display information about svg2vd
   -h, --help               Show this message and exit
 
@@ -44,6 +48,10 @@ Arguments:
   SOURCE  SVG files
   DEST    Directory to save VectorDrawables
 ```
+
+### Kotlin Multiplatform (Experimental)
+
+This project includes an experimental Kotlin Multiplatform SVG to VectorDrawable converter that works without Android SDK or Java AWT dependencies. This enables SVG conversion on platforms where the Android SDK tools are not available.
 
 ### Avocado support
 
