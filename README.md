@@ -23,7 +23,7 @@ Build using the bundled Gradle wrapper.
 ## Running
 
 ```bash
-java -jar svg2vd-0.4.0.jar
+java -jar svg2vd-0.5.0.jar
 ```
 
 ### Help
