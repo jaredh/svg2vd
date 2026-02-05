@@ -2,6 +2,7 @@
 
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -10,7 +11,7 @@ plugins {
 val mainClassName = "dev.hendry.svg2vd.Svg2VdKt"
 
 group = rootProject.name
-version = "0.5.0"
+version = "0.5.1"
 
 repositories {
     google()
@@ -84,4 +85,33 @@ tasks.register<Jar>("fatJar") {
 
 tasks.named("build") {
     dependsOn("fatJar")
+}
+
+val generatedSrcDir = layout.buildDirectory.dir("generated/src/commonMain/kotlin")
+
+tasks.register("generateBuildConfig") {
+    val outputDir = generatedSrcDir
+    val versionString = version.toString()
+    outputs.dir(outputDir)
+    doLast {
+        val dir = outputDir.get().asFile.resolve("dev/hendry/svg2vd")
+        dir.mkdirs()
+        dir.resolve("BuildConfig.kt").writeText(
+            """
+            |package dev.hendry.svg2vd
+            |
+            |object BuildConfig {
+            |    const val VERSION = "$versionString"
+            |}
+            """.trimMargin()
+        )
+    }
+}
+
+kotlin.sourceSets.named("commonMain") {
+    kotlin.srcDir(generatedSrcDir)
+}
+
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
+    dependsOn("generateBuildConfig")
 }

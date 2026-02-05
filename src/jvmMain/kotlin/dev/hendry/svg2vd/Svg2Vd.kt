@@ -30,7 +30,7 @@ class Svg2Vd : CliktCommand () {
     private val rename by option("-r", "--rename", help = "Rename output files to valid Android resource names (lowercase, a-z, 0-9, underscore only)").flag(default = false)
 
     init {
-        versionOption("0.2", help = "Display information about svg2vd")
+        versionOption(BuildConfig.VERSION, help = "Display information about svg2vd")
     }
 
     override fun run() {
