@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -30,6 +30,14 @@ jobs:
 
       - name: Build JS distribution
         run: ./gradlew jsBrowserDistribution
+
+      - name: Build fat JAR
+        run: ./gradlew fatJar
+
+      - name: Upload JAR to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" build/libs/*.jar
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
