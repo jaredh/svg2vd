@@ -51,7 +51,7 @@ kotlin {
 
         jvmMain.dependencies {
             implementation(libs.clikt)
-            compileOnly(libs.android.tools.sdk.common)
+            implementation(libs.android.tools.sdk.common)
             implementation(libs.android.tools.common)
         }
 
@@ -78,6 +78,7 @@ tasks.register<Jar>("fatJar") {
         }
     })
 
+    exclude("META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
